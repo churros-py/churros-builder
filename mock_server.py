@@ -29,10 +29,10 @@ def build_api_service(entities: list[Entity]):
 
     generate_main([entity.name for entity in entities])
 
-
 user_items = [
     EntityItem(name="name", type="str"),
     EntityItem(name="products", type="product", relationship=Relationship.ONE_TO_MANY),
+    EntityItem(name="address", type="address", relationship=Relationship.ONE_TO_ONE_PARENT),
 ]
 
 product_items = [
@@ -50,7 +50,13 @@ product_items = [
     EntityItem(name="user", type="user", relationship=Relationship.MANY_TO_ONE),
 ]
 
+address_items = [
+    EntityItem(name="street", type="str", has_default_value=False),
+    EntityItem(name="user", type="user", relationship=Relationship.ONE_TO_ONE_CHILD),
+]
+
+address = Entity(name='address', items=address_items)
 user = Entity(name="user", items=user_items)
 product = Entity(name="product", items=product_items)
 
-build_api_service([product, user])
+build_api_service([product, user, address])

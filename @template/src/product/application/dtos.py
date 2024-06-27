@@ -7,7 +7,7 @@ from src.user.application.dtos import User
 class Product(BaseModel):
     id: int
     name: str
-    valid_date: datetime
+    expiration_date: datetime
     quantity: int
     weight: float
     description: str
@@ -18,7 +18,7 @@ class Product(BaseModel):
 class CreateProductInput(BaseModel):
     id: int
     name: str
-    valid_date: datetime
+    expiration_date: datetime
     quantity: int
     weight: float
     description: str
@@ -28,7 +28,7 @@ class CreateProductInput(BaseModel):
 
 class UpdateProductInput(BaseModel):
     name: str
-    valid_date: datetime
+    expiration_date: datetime
     quantity: int
     weight: float
     description: str

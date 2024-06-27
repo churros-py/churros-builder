@@ -1,6 +1,6 @@
 import os
 
-from base_request import EntityItem, builtins_types
+from base_request import EntityItem, builtins_types, Relationship
 
 
 def generate_dtos(entity_name: str, items: list[EntityItem]) -> None:
@@ -25,9 +25,11 @@ from pydantic import BaseModel
                 f.write(f"from datetime import datetime\n")
                 continue
 
-            f.write(
-                f"from src.{type_of_field.lower()}.application.dtos import {type_of_field}\n"
-            )
+
+            if attribute.relationship != Relationship.ONE_TO_ONE_CHILD:
+                f.write(
+                    f"from src.{type_of_field.lower()}.application.dtos import {type_of_field}\n"
+                )
 
         f.write(
             f"""\n
@@ -41,7 +43,13 @@ class {entity_name.capitalize()}(BaseModel):
             if field == "id":
                 continue
 
-            f.write(
+            if attribute.relationship == Relationship.ONE_TO_ONE_CHILD:
+                f.write(
+                f"""
+    {field}: '{type_of_field}' # type: ignore"""
+            )
+            else:
+                f.write(
                 f"""
     {field}: {type_of_field}"""
             )
@@ -59,8 +67,14 @@ class Create{entity_name.capitalize()}Input(BaseModel):
 
             if field == "id":
                 continue
-
-            f.write(
+            
+            if attribute.relationship == Relationship.ONE_TO_ONE_CHILD:
+                f.write(
+                f"""
+    {field}: '{type_of_field}' # type: ignore"""
+            )
+            else:
+                f.write(
                 f"""
     {field}: {type_of_field}"""
             )
@@ -78,7 +92,13 @@ class Update{entity_name.capitalize()}Input(BaseModel):"""
             if field == "id":
                 continue
 
-            f.write(
+            if attribute.relationship == Relationship.ONE_TO_ONE_CHILD:
+                f.write(
+                f"""
+    {field}: '{type_of_field}' # type: ignore"""
+            )
+            else:
+                f.write(
                 f"""
     {field}: {type_of_field}"""
             )

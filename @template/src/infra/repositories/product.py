@@ -15,7 +15,7 @@ def to_entity(model: Query | ProductModel) -> Product | None:
 
     return Product(
         model.name,
-        model.valid_date,
+        model.expiration_date,
         model.quantity,
         model.weight,
         model.description,

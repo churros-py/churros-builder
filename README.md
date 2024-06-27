@@ -133,7 +133,6 @@ Request body example:
 ]
 ```
 
-
 ## Contributing
 
 We welcome contributions from the community! To get started, follow these steps:

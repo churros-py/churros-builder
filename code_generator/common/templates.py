@@ -22,10 +22,11 @@ def get_db():
 
 template_schema = """
 # -*- coding: utf-8 -*-
+from __future__ import annotations
 from datetime import datetime
 from sqlalchemy.sql import func
 from sqlalchemy import Column, String, Boolean, DateTime, Float, Integer, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 from src.infra.models import Base
 """
@@ -42,9 +43,10 @@ timestamp_model = """
 
 
 imports_entity = """# -*- coding: utf-8 -*-
+from __future__ import annotations
 from typing import Optional
 from datetime import datetime, timezone
-from dataclasses import dataclass\n"""
+from dataclasses import dataclass, field\n"""
 
 
 imports_repository = """

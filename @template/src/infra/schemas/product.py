@@ -14,7 +14,7 @@ class ProductModel(Base):
 
     id: str = Column(String(255), primary_key=True, index=True)
     name: str = Column(String(255))
-    valid_date: datetime = Column(DateTime())
+    expiration_date: datetime = Column(DateTime())
     quantity: int = Column(Integer())
     weight: float = Column(Float())
     description: str = Column(String(255))

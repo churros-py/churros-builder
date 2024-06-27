@@ -1,7 +1,7 @@
 import os
 from typing import Any
 
-from base_request import EntityItem, builtins_types
+from base_request import EntityItem, builtins_types, Relationship
 from code_generator.common.templates import imports_entity
 
 check_if_required = lambda attribute: not attribute.has_default_value
@@ -21,9 +21,10 @@ def generate_entity(entity_name: str, entity_items: list[EntityItem]) -> None:
                 continue
 
             if attribute.type != "datetime":
-                f.write(
-                    f"""from src.{attribute.type.lower()}.domain.entities import {attribute.type.capitalize()}\n"""
-                )
+                if (attribute.relationship != Relationship.ONE_TO_ONE_CHILD):
+                    f.write(
+                        f"""from src.{attribute.type.lower()}.domain.entities import {attribute.type.capitalize()}\n"""
+                    )
             else:
                 f.write(f"""from datetime import datetime\n""")
 
@@ -48,7 +49,14 @@ class {entity_name.capitalize()}(Entity):
             if field == "id":
                 continue
 
-            f.write(
+            
+            if required_attribute.relationship == Relationship.ONE_TO_ONE_CHILD:
+                f.write(
+                f"""
+    {field}: '{type_of_field}' = field(init=False) # type: ignore"""
+            )
+            else:
+                f.write(
                 f"""
     {field}: {type_of_field}"""
             )

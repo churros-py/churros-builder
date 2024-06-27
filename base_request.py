@@ -17,7 +17,8 @@ def convert_entity_type(name: str) -> str:
 
 
 class Relationship(CustomEnum):
-    ONE_TO_ONE = "OneToOne"
+    ONE_TO_ONE_PARENT = "OneToOneParent"
+    ONE_TO_ONE_CHILD = "OneToOneChild"
     ONE_TO_MANY = "OneToMany"
     MANY_TO_ONE = "ManyToOne" # I Know, doesn't make sense. But I can explain
     MANY_TO_MANY = "ManyToMany"

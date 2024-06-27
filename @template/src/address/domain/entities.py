@@ -1,25 +1,20 @@
 # -*- coding: utf-8 -*-
+from __future__ import annotations  # Needed for forward references in type hints
 from typing import Optional
 from datetime import datetime, timezone
-from dataclasses import dataclass
-from datetime import datetime
-from src.user.domain.entities import User
+from dataclasses import dataclass, field
 
 from src.__seedwork.domain.entities import Entity
 
 
 @dataclass(kw_only=True, frozen=True, slots=True)
-class Product(Entity):
+class Address(Entity):
     id: int
-    name: str
-    expiration_date: datetime
-    user: User
-    quantity: Optional[int] = 10
-    weight: Optional[float] = 0.0
-    description: Optional[str] = 'no description'
-    active: Optional[bool] = False
+    street: str
+    user: 'User' = field(init=False)  # type: ignore
 
     def __post_init__(self):
         if not self.created_at:
             self._set('created_at',  datetime.now(
                 timezone.utc))
+        self.user.address = self  # Set the reverse reference
