@@ -25,7 +25,7 @@ def convert_to_sqlalchemy_type(type: str) -> str:
 models_filename = "src/infra/models.py"
 
 
-def generate_model(entity_name: str, items: list[EntityItem]) -> None:
+def generate_model(entity_name: str, plural_entity_name: str, items: list[EntityItem]) -> None:
     if not os.path.exists(models_filename):
         os.makedirs(os.path.dirname(models_filename), exist_ok=True)
         open("src/infra/__init__.py", "a").close()
@@ -55,7 +55,7 @@ def generate_model(entity_name: str, items: list[EntityItem]) -> None:
 
         f.write(
             f"""\n\nclass {entity_name.capitalize()}Model(Base):
-    __tablename__ = "{entity_name}s"
+    __tablename__ = "{plural_entity_name}"
 
     id: str = Column(String(255), primary_key=True, index=True)"""
         )
@@ -71,8 +71,8 @@ def generate_model(entity_name: str, items: list[EntityItem]) -> None:
                 if attribute.relationship == Relationship.MANY_TO_ONE:
                     f.write(
                         f"""
-    {field}_id = Column(Integer, ForeignKey('{field}s.id'))
-    {field} = relationship('{field.capitalize()}Model', back_populates='{entity_name}s')"""
+    {field}_id = Column(Integer, ForeignKey('{field}.id'))
+    {field} = relationship('{field.capitalize()}Model', back_populates='{plural_entity_name}')"""
                     )
                 elif attribute.relationship == Relationship.ONE_TO_MANY:
                     f.write(
@@ -82,7 +82,7 @@ def generate_model(entity_name: str, items: list[EntityItem]) -> None:
                 elif attribute.relationship == Relationship.ONE_TO_ONE_CHILD:
                     f.write(
                         f"""
-    {field}_id: Mapped[int] = mapped_column(ForeignKey("{field}s.id"))
+    {field}_id: Mapped[int] = mapped_column(ForeignKey("{field}.id"))
     {field}: Mapped["{field.capitalize()}Model"] = relationship(back_populates="{entity_name}") # type: ignore"""
                     )
                 elif attribute.relationship == Relationship.ONE_TO_ONE_PARENT:

@@ -34,4 +34,5 @@ class EntityItem(BaseModel):
 
 class Entity(BaseModel):
     name: str
+    plural_name: str
     items: list[EntityItem]

@@ -4,7 +4,7 @@ from base_request import EntityItem
 from code_generator.common.templates import imports_repository
 
 
-def generate_repository(entity_name: str, entity_items: list[EntityItem]) -> None:
+def generate_repository(entity_name: str, plural_entity_name: str, entity_items: list[EntityItem]) -> None:
     filename = f"src/infra/repositories/{entity_name}.py"
     os.makedirs(os.path.dirname(filename), exist_ok=True)
     open("src/infra/repositories/__init__.py", "a").close()
@@ -38,10 +38,10 @@ def to_entity(model: Query | {model_name}Model) -> {model_name} | None:
         f.write(
             f"""    )\n\n
 def find_all(db: Session, skip: int = 0, limit: int = 100) -> List[{model_name}]:
-    {entity_name}s = (
+    {plural_entity_name} = (
         db.query({model_name}Model).offset(skip).limit(limit)
     )
-    return tuple(map(to_entity, {entity_name}s))
+    return tuple(map(to_entity, {plural_entity_name}))
 
 
 def find_by_id(db: Session, {entity_name}_id: str) -> {model_name} | None:

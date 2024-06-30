@@ -23,10 +23,10 @@ def build_api_service(entities: list[Entity]):
             item.type = convert_entity_type(item.type)
 
         generate_entity(entity.name, entity.items)
-        generate_domain_repository(entity.name)
-        generate_repository(entity.name, entity.items)
-        generate_model(entity.name, entity.items)
-        generate_routers(entity.name, entity.items)
+        generate_domain_repository(entity.name, entity.plural_name)
+        generate_repository(entity.name, entity.plural_name, entity.items)
+        generate_model(entity.name, entity.plural_name, entity.items)
+        generate_routers(entity.name, entity.plural_name, entity.items)
 
     generate_main([entity.name for entity in entities])
 

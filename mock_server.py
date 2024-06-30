@@ -22,12 +22,12 @@ def build_api_service(entities: list[Entity]):
         filtered_items = [item for item in entity.items if item.relationship != Relationship.ONE_TO_MANY]
 
         generate_entity(entity.name, filtered_items)
-        generate_domain_repository(entity.name)
-        generate_repository(entity.name, filtered_items)
-        generate_model(entity.name, entity.items)
-        generate_routers(entity.name, filtered_items)
+        generate_domain_repository(entity.name, entity.plural_name)
+        generate_repository(entity.name,entity.plural_name, filtered_items)
+        generate_model(entity.name, entity.plural_name, entity.items)
+        generate_routers(entity.name, entity.plural_name,filtered_items)
 
-    generate_main([entity.name for entity in entities])
+    generate_main(entities)
 
 user_items = [
     EntityItem(name="name", type="str"),
@@ -55,8 +55,8 @@ address_items = [
     EntityItem(name="user", type="user", relationship=Relationship.ONE_TO_ONE_CHILD),
 ]
 
-address = Entity(name='address', items=address_items)
-user = Entity(name="user", items=user_items)
-product = Entity(name="product", items=product_items)
+address = Entity(name='address', plural_name='addresses', items=address_items)
+user = Entity(name="user", plural_name='users', items=user_items)
+product = Entity(name="product", plural_name='products', items=product_items)
 
 build_api_service([product, user, address])

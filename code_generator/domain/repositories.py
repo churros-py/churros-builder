@@ -1,7 +1,7 @@
 import os
 
 
-def generate_repository(entity_name: str) -> None:
+def generate_repository(entity_name: str, plural_entity_name: str) -> None:
     filename = f"src/{entity_name}/domain/repositories.py"
     os.makedirs(os.path.dirname(filename), exist_ok=True)
 
@@ -22,7 +22,7 @@ class {model}Repository(metaclass=ABCMeta):
     @abstractmethod
     def find_all(self) -> Tuple[{model}]:
         \"""
-        Method responsable for find all {model_lower}s considering pagination
+        Method responsable for find all {plural_entity_name} considering pagination
         \"""
         pass
 

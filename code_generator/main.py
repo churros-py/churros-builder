@@ -1,8 +1,10 @@
 import os
 from typing import List
 
+from base_request import Entity
 
-def generate_main(entity_names: List[str]) -> None:
+
+def generate_main(entities: List[Entity]) -> None:
     filename = "src/main.py"
     os.makedirs(os.path.dirname(filename), exist_ok=True)
     open("src/__init__.py", "a").close()
@@ -15,9 +17,9 @@ from fastapi import FastAPI
 from src.infra.models import Base, engine
 """
         )
-        models_plural = list(map(lambda model: f"{model}s", entity_names))
+        models_plural = list(map(lambda model: f"{model.plural_name}", entities))
         models_plural_routers = list(
-            map(lambda model: f"router_{model}s", entity_names)
+            map(lambda model: f"router_{model.plural_name}", entities)
         )
         f.write(
             f'from src.infra.api.routers import {", ".join(models_plural_routers)}\n'
